@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>我的读书</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="referrer" content="never" />
+    <link href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+    <script src="//cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <![endif]-->
+    <script src="//cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/likebeta/cdn/asset/js/douban.api.js"></script>
+    <style>
+        ::-webkit-scrollbar-track-piece {
+            background-color: #EEE;
+            border-radius: 0;
+            -webkit-border-radius: 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 16px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            height: 50px;
+            background-color: #DDD;
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+            outline: 2px solid #EEE;
+            outline-offset: -2px;
+            border: 2px solid #EEE;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            height: 50px;
+            background-color: #40AA52;
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+        }
+
+        img {
+            border: 0;
+        }
+
+        ::selection {
+            color: #fff;
+            background-color: #40AA52;
+            text-shadow: none;
+        }
+
+        ::-moz-selection {
+            color: #fff;
+            background-color: #40AA52;
+            text-shadow: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        body {
+            line-height: 180%;
+            font-size: 12px;
+            font-family: 'Microsoft Yahei', Verdana, Arial, Helvetica, sans-serif;
+            text-align: center;
+            color: #333;
+            margin: 0;
+        }
+
+        body {
+            background: #eeeeee;
+        }
+
+        div,
+        img,
+        ul,
+        li {
+            border: 0;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+        }
+
+        h4 {
+            font-weight: 400;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        ul,
+        li {
+            list-style: none;
+        }
+
+        a {
+            color: #40aa52;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #40aa52;
+        }
+
+        #wrap {
+            position: relative;
+            table-layout: fixed;
+            word-break: break-all;
+            margin: 0 auto;
+            width: 930px;
+            min-height: 300px;
+            display: inline-block;
+            padding: 0 5px 0 5px;
+
+        }
+
+        #content {
+            float: left;
+            /*width:618px;*/
+            padding: 0 20px 0 20px;
+            margin-top: 25px;
+        }
+
+        .post {
+            clear: both;
+            position: relative;
+        }
+
+        .post .con ul {
+            margin: 5px 0;
+        }
+
+        .post .con li {
+            list-style-type: none;
+            min-height: 20px;
+            line-height: 1.4em;
+            padding: 4px 0px;
+            margin-left: 1.1em;
+        }
+
+        .post .con ul li {
+            list-style: disc inside;
+        }
+
+        .page .post .con ul li {
+            list-style: none;
+        }
+
+        .post .con {
+            font-family: 'Microsoft Yahei', Verdana, Arial, Helvetica, sans-serif;
+            color: #555;
+            padding: 18px 0 30px 0;
+        }
+
+        .post .con img {
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            max-width: 600px;
+            padding: 5px;
+            border: solid 1px #ddd;
+        }
+
+        .post .con img {
+            max-width: 600px;
+        }
+
+        .post .con {
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .post h4 {
+            color: #40aa52;
+            margin-top: 8px;
+            border-left: solid 5px #40aa52;
+            padding-left: 15px;
+        }
+
+        .page {
+            padding-bottom: 30px !important;
+            padding-top: 20px !important;
+            width: 890px !important;
+        }
+
+        .douban-list ul li {
+            width: 80px;
+            float: left;
+            list-style: none outside none;
+        }
+
+        .douban-list ul li img {
+            width: 70px;
+            height: 100px;
+            border: solid 1px #DDD;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <section id="content" class="page">
+            <article class="post">
+                <div class="con">
+                    <article>
+                        <div id="archives">
+                            <div id="douban">
+                                <div id="book-reading-wrap"></div>
+                                <div id="book-read-wrap"></div>
+                                <div id="book-wish-wrap"></div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </article>
+            <div class="clear"></div>
+        </section>
+        <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+        NProgress.configure({ showSpinner: false, minimum: 0.1 });
+        NProgress.start();
+        $(window).load(function () {
+            NProgress.done(true);
+            $('.fade').removeClass('out');
+        });
+        let dbapi = new DoubanApi("kingtouch", "0b204112100ace0a2160c33630206a1e");
+        $(document).ready(function () {
+            dbapi.show();
+        });
+    </script>
+</body>
+
+</html>
